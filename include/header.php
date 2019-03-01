@@ -1,14 +1,21 @@
 <?php 
     $filedir = realpath(dirname(__FILE__));
     include $filedir."/../libs/Database.php";
+    include $filedir."/../libs/Helpers.php";
+    include $filedir."/../libs/Session.php";
     include $filedir."/../libs/Brand.php";
     include $filedir."/../libs/Category.php";
     include $filedir."/../libs/Products.php";
+    include $filedir."/../libs/Cart.php";
     Session::init();
 ?>
-<?php $pro   = new Products(); ?>
-<?php $brand = new Brand(); ?>
-<?php $cat   = new Category(); ?>
+<?php
+    $helper= new Helpers();
+    $pro   = new Products();
+    $brand = new Brand();
+    $cat   = new Category();
+    $cart   = new Cart();
+ ?>
 
 <!DOCTYPE html>
 <html lang="en">

@@ -1,8 +1,8 @@
 <?php 
 //brand class
-include_once "Database.php";
+/*include_once "Database.php";
 include_once "Helpers.php";
-include_once "Session.php";
+include_once "Session.php";*/
 class Brand{
 	
 	private $db;

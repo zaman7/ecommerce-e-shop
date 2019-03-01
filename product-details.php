@@ -111,15 +111,17 @@
 								<h2><?php echo $value['productName']; ?></h2>
 								<p>Web ID: 1089772</p>
 								<img src="images/product-details/rating.png" alt="" />
-								<span>
-									<span>US $<?php echo $value['price']; ?></span>
-									<label>Quantity:</label>
-									<input type="text" value="3" />
-									<button type="button" class="btn btn-fefault cart">
-										<i class="fa fa-shopping-cart"></i>
-										Add to cart
-									</button>
-								</span>
+								<form action="#" method="POST">
+									<span>
+										<span>US $<?php echo $value['price']; ?></span>
+										<label>Quantity:</label>
+										<input type="text" value="3" name="quantity" />
+										<button type="submit" class="btn btn-fefault cart">
+											<i class="fa fa-shopping-cart"></i>
+											Add to cart
+										</button>
+									</span>
+								</form>
 								<p><b>Availability:</b> In Stock</p>
 								<p><b>Condition:</b> New</p>
 								<p><b>Brand:</b> <?php echo $value['brandName']; ?></p>
@@ -132,9 +134,8 @@
 						<div class="pro-details" id="reviews" >
 							<div class="col-sm-12">
 								<ul>
-									<li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
-									<li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
-									<li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
+									<li><a href="#"><i class="fa fa-user"></i><?php echo $value['author']; ?></a></li>
+									<li><a href="#"><i class="fa fa-clock-o"></i><?php echo $helper ->formatTime($value['postTime']); ?></a></li>
 								</ul>
 								<p><?php echo $value['body']; ?></p>
 								<p><b>Write Your Review</b></p>

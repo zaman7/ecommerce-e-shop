@@ -5,7 +5,7 @@
 Format class
 */
 class Helpers{
-	public function FormatDate($date){
+	public function formatTime($date){
 		
 		return date('F j, Y, g: i a', strtotime($date));
 	}
