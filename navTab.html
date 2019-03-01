@@ -1,0 +1,51 @@
+<div class="category-tab"><!--category-tab-->
+
+	<?php
+		$tabNav  = '';
+			$tabContent = '';
+		$getTabCat = $cat->getAllCat();
+		if ($getTabCat) {
+			$count = 0;
+			while ($tabValue = $getTabCat->fetch_assoc()) {
+				if ($count == 0) {
+				    $tabNav .= "<li class='active'><a href=#".$tabValue['categoryId']." data-toggle='tab'>".$tabValue['category']."</a></li>";
+				   $tabContent .= '<div class="tab-pane fade active in" id='.$tabValue['categoryId'].'>
+				                    <div class="col-sm-3">';
+
+				  }
+				  else{
+				    $tabNav .= "<li class=''><a href=#".$tabValue['categoryId']." data-toggle='tab'>".$tabValue['category']."</a></li>";
+				      
+				    $tabContent .= '<div class="tab-pane fade" id='.$tabValue['categoryId'].' >
+				                    <div class="col-sm-3">';
+				  }
+				$getTabCon =$pro->getTabContent($tabValue['categoryId']);
+				if ($getTabCon) {
+					while ($tabCont = $getTabCon->fetch_assoc()) {
+						$tabContent .='
+						<div class="product-image-wrapper">
+	                        <div class="single-products">
+	                            <div class="productinfo text-center">
+	                                <img src="e-admin/'.$tabCont["image"].'" alt="" />
+	                                <h2>$'.$tabCont["price"].'</h2>
+	                                <p>'.$tabCont["productName"].'</p>
+	                                <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+	                            </div>
+	                        </div>
+	                    </div>';
+					}
+					$tabContent .= '</div> </div>';
+				}
+				$count++;
+			}
+		}
+	?>
+	<div class="col-sm-12">
+		<ul class="nav nav-tabs">
+			<?php echo $tabNav; ?>
+		</ul>
+	</div>
+	<div class="tab-content">
+		<?php echo $tabContent; ?>
+	</div>
+</div><!--/category-tab-->

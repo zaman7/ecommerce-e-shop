@@ -1,0 +1,264 @@
+<?php
+include_once "Database.php";
+include_once "Helpers.php";
+include_once "Session.php";
+
+/**
+ * Products class
+ */
+class Products{
+
+	private $db;
+ 	private $format;
+ 	public function __construct(){
+ 		$this->db = new Database();
+ 		$this->format = new Helpers();
+ 	}
+
+    //show all brand function
+ 	public function getAllBrandName(){
+ 		$query = "SELECT * FROM brand_table ORDER BY brandName ASC";
+ 		$result = $this->db->readData($query);
+ 		return $result;
+ 	}
+    //show all cetegory function
+ 	public function getAllCategory(){
+ 		$query = "SELECT * FROM category_table ORDER BY category ASC";
+ 		$result = $this->db->readData($query);
+ 		return $result;
+ 	}
+    //insert product function
+ 	public function insartProduct($data, $img_file){
+
+        $productName  = mysqli_real_escape_string($this->db->link, $data['product_title']);
+ 		$categoryId  = mysqli_real_escape_string($this->db->link, $data['categoryId']);
+ 		$brandId = mysqli_real_escape_string($this->db->link, $data['brand_id']);
+ 		$price = mysqli_real_escape_string($this->db->link, $data['price']);
+ 		$pro_details = mysqli_real_escape_string($this->db->link, $data['pro_details']);
+ 		$pro_type = mysqli_real_escape_string($this->db->link, $data['pro_type']);
+ 		$author = mysqli_real_escape_string($this->db->link, $data['author']);
+
+
+ 		$pro_img 	= $img_file['image']['name'];
+        $image_type = array('jpg','png', 'gif','jpeg' );
+        $file_size  = $_FILES['image']['size'];
+        $tmp_name   = $_FILES['image']['tmp_name'];
+
+        $div         = explode('.', $pro_img);
+        $file_ext    = strtolower(end($div));
+        $unique_name = substr(md5(time()),0,10).'.'.$file_ext;
+        $upload_image= "uploads/posts/".$unique_name;
+
+        if (empty($productName)) {
+        	$msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Enter product name!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+        	return $msg;
+        }
+        else if (empty($categoryId)) {
+        	$msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Select Catogory!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+        	return $msg;
+        }
+        else if (empty($brandId)) {
+        	$msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong> Select Brand!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+        	return $msg;
+        }
+        else if (empty($pro_img)) {
+        	$msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Select Products Image!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+        	return $msg;
+        }
+        else if (empty($price)) {
+        	$msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Enter Price!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+        	return $msg;
+        }
+
+        else if (empty($pro_details)) {
+        	$msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Enter Products Details!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+        	return $msg;
+        }
+
+        else if ($pro_type == "") {
+        	$msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong> Product Type empty!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+        	return $msg;
+        }
+        else{
+        	if (in_array($file_ext, $image_type) === false) {
+                $msg ="<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong> Please select any image file:-".implode(', ',$image_type)."<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+                return $msg;
+            }
+            else{
+            	move_uploaded_file($tmp_name, $upload_image);
+
+                $query= "INSERT INTO products_table(productName, brandId, categoryId, body, price, image, type, author) VALUES('$productName', '$brandId', '$categoryId', '$pro_details', '$price', '$upload_image', '$pro_type', '$author')";
+                $proIns = $this->db->insertData($query);
+                if ($proIns) {
+                    $msg = "<div class='alert alert-success alert-dismissible' role='alert'><strong>Success! </strong>Post Uploaded Successfully.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+                    return $msg;
+                }
+                else{
+                    $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Post Not Uploaded.....!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+                    return $msg;
+                }
+            }
+        }
+ 	}
+
+    //show all products function
+    public function getAllProducts(){
+        $query = "SELECT products_table.*, category_table.category, brand_table.brandName
+        FROM products_table
+        INNER JOIN category_table ON products_table.categoryId = category_table.categoryId
+        INNER JOIN brand_table ON products_table.brandId = brand_table.brandId
+        ORDER BY products_table.productId DESC";
+        $result = $this->db->readData($query);
+        return $result;
+
+    }
+
+    //edit products function
+    public function getEditPro($productId){
+        $query = "SELECT products_table.*, category_table.category, brand_table.brandName
+        FROM products_table
+        INNER JOIN category_table ON products_table.categoryId = category_table.categoryId
+        INNER JOIN brand_table ON products_table.brandId = brand_table.brandId
+        WHERE productId = '$productId'";
+
+        $result = $this->db->readData($query);
+        return $result;
+    }
+
+    //update products function
+    public function updateProduct($up_data, $up_img_file){
+
+        $productName  = mysqli_real_escape_string($this->db->link, $up_data['product_title']);
+        $categoryId  = mysqli_real_escape_string($this->db->link, $up_data['categoryId']);
+        $brandId = mysqli_real_escape_string($this->db->link, $up_data['brand_id']);
+        $price = mysqli_real_escape_string($this->db->link, $up_data['price']);
+        $pro_details = mysqli_real_escape_string($this->db->link, $up_data['pro_details']);
+        $pro_type = mysqli_real_escape_string($this->db->link, $up_data['pro_type']);
+        $author = mysqli_real_escape_string($this->db->link, $up_data['author']);
+
+
+        $pro_img    = $up_img_file['image']['name'];
+        $image_type = array('jpg','png', 'gif','jpeg' );
+        $file_size  = $up_img_file['image']['size'];
+        $tmp_name   = $up_img_file['image']['tmp_name'];
+
+        $div         = explode('.', $pro_img);
+        $file_ext    = strtolower(end($div));
+        $unique_name = substr(md5(time()),0,10).'.'.$file_ext;
+        $upload_image= "uploads/posts/".$unique_name;
+
+        if (empty($productName)) {
+            $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Enter product name!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+            return $msg;
+        }
+        else if (empty($categoryId)) {
+            $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Select Catogory!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+            return $msg;
+        }
+        else if (empty($brandId)) {
+            $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong> Select Brand!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+            return $msg;
+        }
+        else if (empty($price)) {
+            $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Enter Price!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+            return $msg;
+        }
+
+        else if (empty($pro_details)) {
+            $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Enter Products Details!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+            return $msg;
+        }
+
+        else if ($pro_type == "") {
+            $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong> Product Type empty!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+            return $msg;
+        }
+
+        else{
+            if (empty($pro_img)) {
+                $query= "UPDATE products_table SET productName='$productName',
+                brandId='$brandId', categoryId='$categoryId', body='$pro_details',
+                price='$price', type='$pro_type', author='$author'";
+                $proIns = $this->db->updateData($query);
+                if ($proIns) {
+                    $msg = "<div class='alert alert-success alert-dismissible' role='alert'><strong>Success! </strong>Post Update Successfully.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+                    return $msg;
+                }
+                else{
+                    $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Post Not Updated.....!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+                    return $msg;
+                }
+            }
+            move_uploaded_file($tmp_name, $upload_image);
+
+            $query= "UPDATE products_table SET productName='$productName',
+            brandId='$brandId', categoryId='$categoryId', body='$pro_details',
+            price='$price', image='$upload_image', type='$pro_type', author='$author'";
+            $proIns = $this->db->updateData($query);
+            if ($proIns) {
+                $msg = "<div class='alert alert-success alert-dismissible' role='alert'><strong>Success! </strong>Post Update Successfully.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+                return $msg;
+            }
+            else{
+                $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Post Not Updated.....!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+                return $msg;
+            }
+        }
+    }
+
+    //delete products function
+    public function deleteProducts($productId){
+
+        $productId = $productId;
+        $query = "SELECT * FROM products_table WHERE productId = '$productId'";
+        $getpostImg = $this->db->readData($query);
+        if ($getpostImg) {
+            while ($delImg = $getpostImg->fetch_assoc()) {
+                $unlinkImg = $delImg['image'];
+                if ($unlinkImg) {
+                   unlink($unlinkImg);
+                }
+            }
+        }
+        $query = "DELETE FROM products_table WHERE productId = '$productId'";
+        $result = $this->db->deleteData($query);
+        if ($result) {
+            $msg = "<div class='alert alert-success alert-dismissible' role='alert'><strong>Success! </strong>Product was Deleted!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+            return $msg;
+        }
+        else{
+            $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong> Product is not Deleted!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+            return $msg;
+        }
+    }
+
+    //show fetured products
+    public function getFeaturedProducts(){
+        $query = "SELECT * FROM products_table WHERE type='1' ORDER BY productId DESC LIMIT 6";
+        $result = $this->db->readData($query);
+        return $result;
+    }
+
+    //show fetured single products
+    public function showSinglePro($single_pro){
+        $single_pro = $single_pro;
+        $query = "SELECT p.*, c.category, b.brandName
+        FROM products_table as p, category_table as c, brand_table as b WHERE p.categoryId = c.categoryId
+        AND p.brandId = b.brandId AND p.productId = '$single_pro'";
+        $result = $this->db->readData($query);
+        return $result;
+    }
+
+
+
+
+
+
+
+
+
+    
+
+}
+
+?>

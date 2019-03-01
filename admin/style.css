@@ -1,0 +1,312 @@
+/**************************
+
+    Theme Name: admin panel
+    Author: Zaman,
+
+***************************/
+
+/********************
+*+-----Base CSS-----+*
+*********************/
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: sans-serif;
+    font-size: 14px;
+    line-height: 25px;
+    background: #0073aa;
+    overflow-x:hidden;
+}
+img {
+    max-width: 100%;
+}
+a,
+a:hover,
+a:focus {
+    text-decoration: none;
+    transition: .4s;
+}
+.left{
+    float: left;
+}
+.right{
+    float: right
+}
+.header-top {
+    background: #32373C;
+    min-height: 50px;
+    color: #fff;
+    position: relative;
+}
+.section-title {
+    padding: 10px 15px;
+    background: #2ecc71;
+}
+.section-title h2 {
+    margin: 0px;
+    color: #fff;
+}
+.sidebar-area {
+    background: #23282d;
+    color: #fff;
+    padding-top: 15px;
+    min-height: 570px;
+    padding-bottom: 15px;
+}
+.main-content {
+    background: #F1F1F1;
+    padding: 15px;
+    min-height: 570px;
+}
+.padding-left15 {
+    padding-left: 0px;
+}
+.padding-right15 {
+    padding-right: 0px;
+}
+div#accordion .collapse-body h3,
+.dashboard-link h3 {
+    position: relative;
+    padding: 10px 5px;
+    cursor: pointer;
+    transition: .4s;
+    font-size: 18px;
+    border-bottom: 1px solid #2ecc71;
+    margin: 0px;
+    background:#32373C;
+    padding-left: 15px;
+}
+div#accordion .collapse-body h3:last-child:hover{
+    border-bottom: 0px solid #2ecc71;
+}
+div#accordion .collapse-body h3:last-child{
+    border-bottom: 0px solid #2ecc71;
+}
+div#accordion .collapse-body h3 a, .dashboard-link h3 a{
+    display: block;
+    color: #fff;
+}
+div#accordion .collapse-body h3:hover{
+    background: #2ecc71;
+    border-bottom: 1px solid #2ecc71;
+}
+
+.submenu a {
+	display: block;
+	padding: 10px;
+    color: #191E23;
+	background: #ddd;
+	font-size: 16px;
+    border-bottom: 1px solid #2ecc71;
+}
+.submenu a:hover {
+    background: #2ecc71;
+    color: #fff;
+}
+div#accordion .collapse-body h3 a i.fa.fa-angle-down,
+div#accordion .collapse-body h3 a i.fa.fa-angle-up,
+div#accordion .dashbord-collapse-item h3 a i.fa.fa-angle-down,
+div#accordion .dashbord-collapse-item h3 a i.fa.fa-angle-up {
+    float: right;
+    padding-right: 15px;
+    display: none;
+}
+div#accordion .collapse-body h3 a[aria-expanded=true] i.fa.fa-angle-down,
+div#accordion .dashbord-collapse-item h3 a[aria-expanded=true] i.fa.fa-angle-down{
+    display: block;
+}
+div#accordion .collapse-body h3 a[aria-expanded=false] i.fa.fa-angle-up,
+div#accordion .dashbord-collapse-item h3 a[aria-expanded=false] i.fa.fa-angle-up{
+    display: block;
+}
+.mobile-nav-bar,.site-url-mobile{
+    display: none;
+}
+#active-mobilemenu, .home-btn, .site-url-mobile {
+    cursor: pointer;
+	margin-left: 15px;
+    display: inline-block;
+    line-height: 50px;
+    font-size: 30px;
+}
+
+.home-btn a, .site-url-mobile a{
+    color: #fff;
+}
+.off-canvas-menu {
+    transition: .4s;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+    margin-left: -100%;
+    opacity: 0;
+    background: #191e23;
+    position: absolute;
+}
+.mobile-menu {
+    margin-top: 40px;
+}
+.close-btn {
+    position:  absolute;
+    left: 16px;
+    top: 5px;
+    cursor: pointer;
+}
+.close-btn img{
+    width: 20px;
+}
+.site-url {
+	display: inline-block;
+	padding-left: 15px;
+	font-size: 20px;
+}
+.site-url a{
+    color: #fff;
+    display: block;
+}
+.site-url a i{
+    margin-right: 10px;
+    margin-top: 5px;
+    font-size: 30px;
+}
+.view-user {
+    margin-right: 30px;
+    margin-top: 10px;
+}
+ul.nav > li > a {
+    color: #fff;
+    display: inline-block;
+    padding-left: 30px;
+}
+ul.nav > li:hover,
+ul.nav li a:hover {
+    background: #103d5f;
+    color: #22ddaa;
+}
+.header-menu div ul.nav li:hover,
+.header-menu div ul.nav li a:hover {
+    background: none;
+    color: #22ddaa;
+}
+
+
+div#accordion .collapse-body h3.active-page::before,
+.dashboard-link h3.active-page::before{
+    content: "";
+    position: absolute;
+    right: 0px;
+    top: 4px;
+    border: 15px solid #F1F1F1;
+    height: 0;
+    border-top: 15px solid transparent;
+    border-left: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    width: 0;
+}
+
+.catblock,
+.sloginblock,
+.social,
+.copyblock,
+.passchange,
+.user-block{
+    width: 50%;
+    height: auto;
+    margin-left: 50px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+.addpost,
+.catlist,
+.postlist-block,
+.userlist-block,
+.inbox {
+    margin-top: 10px;
+}
+.addpost{
+    margin-left: 30px;
+    margin-right: 15px;
+}
+#post-title{
+    width: 320px;
+}
+#price, #author {
+    width: 220px;
+}
+input[type="file"] {
+    max-width: 100%;
+    border: 1px solid #ddd;
+    padding: 8px 10px;
+    border-radius: 5px;
+}
+#datepicker {
+    width: 200px;
+    display: inline-block;
+}
+.addpost form div label {
+    display: block;
+}
+.addpost form div textarea {
+    width: 500px;
+    padding: 15px;
+    min-height: 208px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    resize: none;
+}
+
+.addpost form div select {
+    padding: 6px 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+.dashbord-collapse-item h3 {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 0;
+    cursor: pointer;
+}
+.dashbord-collapse-item h3 a{
+    display: block;
+}
+div#at-glance, div#activity {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.glance-itme ul, #activity div.dashbord-content-body ul {
+    list-style:  none;
+    margin:  0;
+    padding: 0;
+}
+
+.glance-itme ul li, #activity div.dashbord-content-body ul li {
+    display:  inline-block;
+    padding: 10px 5px;
+}
+
+#activity div.dashbord-content-body ul li
+
+
+/*...dataTable...*/
+div#dataTable_paginate a {
+    background: #ddd;
+    margin: 0px 5px;
+}
+
+.custom-modal{
+    padding: 10px;
+}
+.custom-modal h3 {
+    padding-top: 15px;
+    padding-bottom: 50px;
+    text-align: center;
+
+}

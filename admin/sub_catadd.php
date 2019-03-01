@@ -1,0 +1,63 @@
+<?php include "include/header.php"; ?>
+<?php include "../libs/Category.php"; ?>
+<?php $cat = new Category(); ?>
+<?php 
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $categoryId = $_POST['categoryId'];
+        $sub_category = $_POST['sub_category'];
+        $addSubCat = $cat->addSubCategory($categoryId,$sub_category);
+    }
+?>
+    <section class="main-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3 col-lg-2 col-sm-4 col-xs-12 padding-right15">
+                    <?php include "include/sidebar.php" ?>
+                </div>
+
+                <div class="col-md-9 col-lg-10 col-sm-8 col-xs-12 padding-left15">
+                    <div class="main-content">
+                        <div class="display-flax-content">
+                            <div class="section-title">
+                                <h2>Add Sub Category</h2>
+                            </div>
+                            <div class="content">
+                                <div class="catblock">
+                                    <?php 
+                                        if (isset($addSubCat)) {
+                                            echo $addSubCat;
+                                        } 
+                                    ?>
+                                    <form action="" method="POST">
+                                    <div class="form-group">
+                                        <label for="category">Category Name:</label><br>
+                                        <select id="selectmenu" name="categoryId">
+                                            <option selected="selected">Select One</option>
+                                        <?php 
+                                            $getCat = $cat->getAllCat();
+                                            if ($getCat) {
+                                                while ($catValue = $getCat->fetch_assoc()) {
+                                            
+                                        ?>
+                                        <option value="<?php echo $catValue['categoryId'] ?>"><?php echo $catValue["category"]; ?></option>
+                                    <?php } } ?>
+                                        </select>
+                                    </div>
+
+                                        <div class="form-group">
+                                            <label for="category">Sub Category:</label>
+                                            <input type="text" name="sub_category" placeholder="Enter Sub Category Name" id="category" class="form-control" >
+                                        </div>
+
+                                        <input type="submit" class="btn btn-success" name="submit" Value="Add Category" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<?php include "include/footer.php"; ?>
