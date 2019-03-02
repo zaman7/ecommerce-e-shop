@@ -9,7 +9,10 @@
     else if (isset($_GET['delete_cart_item'])) {
          $del_cart = $_GET['delete_cart_item'];
          $delCartItem= $cart->delCart($del_cart);
-     }
+    }
+    if (!isset($_GET['ref_cart'])) {
+    	echo "<meta http-equiv='refresh' content='0; URL=?ref_cart=zl'/>";
+    }
 ?>
 	<section id="cart_items">
 		<div class="container">
@@ -40,13 +43,15 @@
 					<tbody>
 						
 						<?php 
-
-							$getCart = $cart->getCartPro();
-							if ($getCart) {
-								$i= 0;
-								$subTotal = 0;
-								while ($value = $getCart->fetch_assoc()) {
-									$i++;
+							$chekcCart = $cart->checkCartTable();
+							if ($chekcCart) {						
+								$getCart = $cart->getCartPro();
+								if ($getCart) {
+									$i= 0;
+									$subTotal = 0;
+									$qty = 0;
+									while ($value = $getCart->fetch_assoc()) {
+										$i++;
 						?>
 						<tr>
 
@@ -54,14 +59,14 @@
 								<a href=""><img src="admin/<?php echo $value['image'] ?>" alt="" width="100px"></a>
 							</td>
 							<td class="cart_description">
-								<h4><a href="product-details.php?single_pro_details=<?php echo $value['productId']; ?>&add-to-cart"><?php echo $value['productName'] ?></a></h4>
+								<h4><a href="product-details.php?single_product_details=<?php echo $value['productId']; ?>&add-to-cart"><?php echo $value['productName'] ?></a></h4>
 								<p>Web ID: 1089772</p>
 							</td>
 							<td class="cart_price">
 								<p>$<?php echo $value['price'] ?></p>
 							</td>
 							<td class="cart_quantity">
-								<form action="#" method="POST">
+								<form action="" method="POST">
 									<div class="cart_quantity_button">
 										<a class="cart_quantity_up" href=""> + </a>
 										<input type="hidden" name="cart_id" value="<?php echo $value['cartId'] ?>">
@@ -76,6 +81,9 @@
 								<?php 
 									$totalPrice = $value['price'] * $value['quantity'];
 									echo $totalPrice;
+									$qty = $qty + $value['quantity'];
+									Session::set("quantity", $qty);
+
 								?>
 								</p>
 							</td>
@@ -83,15 +91,17 @@
 								<a class="cart_quantity_delete" href="cart.php?delete_cart_item=<?php echo $value['cartId'] ?>"><i class="fa fa-times"></i></a>
 							</td>
 						</tr>
+						
 						<?php
 							$subTotal = $subTotal + $totalPrice;
 							$vat = $subTotal*.07;
 							$gTotal = $subTotal+$vat;
-
 						?>
-					<?php } }else{
-						echo "No Data";
-					} ?>
+						<?php } }else{
+							echo "Cart is empty";
+						} }else{
+							echo "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Cart is empty please <a href='http://localhost/ecommerce-e-shop/'>shop now!</a><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+						} ?>
 					</tbody>
 				</table>
 			</div>

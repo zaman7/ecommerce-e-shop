@@ -69,84 +69,39 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-3">
-					<div class="left-sidebar">
-						<h2>Category</h2>
-						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
-							<?php 
-								$getCategory = $cat->getAllCat();
-								if ($getCategory) {
-									while ($value = $getCategory->fetch_assoc()) {
-
-                            ?>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="<?php echo $value['categoryId']; ?>"><?php echo $value['category']; ?></a></h4>
-								</div>
-							</div>
-						<?php } } ?>
-							
-						</div><!--/category-products-->
-					
-						<div class="brands_products"><!--brands_products-->
-							<h2>Brands</h2>
-							<div class="brands-name">
-								<ul class="nav nav-pills nav-stacked">
-									<?php 
-                                        $showBrand = $brand->getAllBrand();
-                                        if ($showBrand) {
-                                            while ($brandValue = $showBrand->fetch_assoc()) {
-                                        
-                                    ?>
-									<li><a href="<?php echo $brandValue['brandId']; ?>"> <span class="pull-right">(50)</span><?php echo $brandValue['brandName']; ?></a></li>
-								<?php } } ?>
-								</ul>
-							</div>
-						</div><!--/brands_products-->
-						
-						<div class="price-range"><!--price-range-->
-							<h2>Price Range</h2>
-							<div class="well text-center">
-								 <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="600" data-slider-step="5" data-slider-value="[250,450]" id="sl2" ><br />
-								 <b class="pull-left">$ 0</b> <b class="pull-right">$ 600</b>
-							</div>
-						</div><!--/price-range-->
-						
-						<div class="shipping text-center"><!--shipping-->
-							<img src="images/home/shipping.jpg" alt="" />
-						</div><!--/shipping-->
-					</div>
+					<?php include "include/sidebar.php" ?>
 				</div>
 				
 				<div class="col-sm-9 padding-right">
 					<div class="features_items"><!--features_items-->
-						<h2 class="title text-center">Features Items</h2>
+						<h2 class="title text-center">Our Products</h2>
 						<?php 
-							$getFeaturedPro = $pro->getFeaturedProducts();
-							if ($getFeaturedPro) {
-								while ($featuredValue = $getFeaturedPro->fetch_assoc()) {
+							$getProducts = $pro->getHomePageProducts();
+							if ($getProducts) {
+								while ($productValue = $getProducts->fetch_assoc()) {
 
 						?>
 						<div class="col-sm-4">
 							<div class="product-image-wrapper">
 								<div class="single-products">
 									<div class="productinfo text-center">
-										<img src="admin/<?php echo $featuredValue['image']; ?>" alt="" />
-										<h2>$<?php echo $featuredValue['price']; ?></h2>
-										<a href="product-details.php?single_pro_details=<?php echo $featuredValue['productId']; ?>">
-											<p><?php echo $featuredValue['productName']; ?></p>
+										<img src="admin/<?php echo $productValue['image']; ?>" alt="" />
+										<h2>$<?php echo $productValue['price']; ?></h2>
+										<a href="product-details.php?single_product_details=<?php echo $productValue['productId']; ?>">
+											<p><?php echo $productValue['productName']; ?></p>
 										</a>
-										<a href="product-details.php?single_pro_details=<?php echo $featuredValue['productId']; ?>&add-to-cart" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+										<a href="product-details.php?single_product_details=<?php echo $productValue['productId']; ?>&add-to-cart" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 									</div>
 									<div class="product-overlay">
 										<div class="overlay-content">
-											<h2>$<?php echo $featuredValue['price']; ?></h2>
-											<a href="product-details.php?single_pro_details=<?php echo $featuredValue['productId']; ?>&add-to-cart">
-												<p><?php echo $featuredValue['productName']; ?></p>
+											<h2>$<?php echo $productValue['price']; ?></h2>
+											<a href="product-details.php?single_product_details=<?php echo $productValue['productId']; ?>&add-to-cart">
+												<p><?php echo $productValue['productName']; ?></p>
 											</a>
-											<a href="product-details.php?single_pro_details=<?php echo $featuredValue['productId']; ?>&add-to-cart" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+											<a href="product-details.php?single_product_details=<?php echo $productValue['productId']; ?>&add-to-cart" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 										</div>
 									</div>
-									<?php if ($featuredValue['type'] == 0 ) {
+									<?php if ($productValue['type'] == 0 ) {
 									?>
 									<img src="images/home/new.png" class="new" alt="" />
 								<?php } ?>

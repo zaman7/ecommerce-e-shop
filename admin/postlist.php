@@ -42,7 +42,7 @@
                                     </thead>
                                     <tbody>
                                         <?php 
-                                            $getProducts = $pro->getAllProducts();
+                                            $getProducts = $pro->getAllProductsAdmin();
                                             if ($getProducts) {
                                                 $i= 0;
                                                 while ($value = $getProducts->fetch_assoc()) {

@@ -72,7 +72,7 @@
 
                                     <div class="form-group">
                                         <label>Product Details:</label>
-                                        <textarea name="pro_details" placeholder="Product Details"></textarea>
+                                        <textarea name="products_details" placeholder="Product Details"></textarea>
                                     </div>
 
                                     <div class="form-group">

@@ -104,7 +104,24 @@
                                 <li><a href="#"><i class="fa fa-user"></i> Account</a></li>
                                 <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
                                 <li><a href="checkout.php"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-                                <li><a href="cart.php"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+                                <li><a href="cart.php"><i class="fa fa-shopping-cart"></i> Cart <span class="badge badge-light">
+                                    
+                                    <?php
+                                        $chekcCart = $cart->checkCartTable();
+                                        if ($chekcCart) {
+                                            $qty = Session::get("quantity");
+                                            if ($qty) {
+                                                echo $qty;
+                                            }
+                                            else{
+                                                echo "0";
+                                            }
+                                        }
+                                        else{
+                                            echo "0";
+                                        }
+                                     ?>
+                                </span></a></li>
                                 <li><a href="login.php"><i class="fa fa-lock"></i> Login</a></li>
                             </ul>
                         </div>
@@ -133,7 +150,21 @@
                                         <li><a href="shop.php">Products</a></li>
                                         <li><a href="product-details.php">Product Details</a></li> 
                                         <li><a href="checkout.php">Checkout</a></li> 
-                                        <li><a href="cart.php">Cart</a></li> 
+                                        <li><a href="cart.php">Cart <span class="badge badge-light">
+                                            <?php
+                                                $chekcCart = $cart->checkCartTable();
+                                                if ($chekcCart) {
+                                                    if ($qty) {
+                                                        echo $qty;
+                                                    }
+                                                    else{
+                                                        echo "0";
+                                                    }
+                                                }else{
+                                                    echo "0";
+                                                }
+                                            ?>
+                                        </span></a></li> 
                                         <li><a href="login.php">Login</a></li> 
                                     </ul>
                                 </li> 

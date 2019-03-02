@@ -1,11 +1,14 @@
 <?php include "include/header.php" ?>
-
-	<section id="advertisement">
-		<div class="container">
-			<img src="images/shop/advertisement.jpg" alt="" />
-		</div>
-	</section>
-	
+<?php 
+	if (!isset($_GET['products_by_brand']) OR $_GET['products_by_brand'] == NULL ) {
+        echo "<script>window.location='index.php';</script>";
+    }
+    else{
+    	$brandId = $_GET['products_by_brand'];
+        $getProductByBrand  = $pro->showProductsByBrand($brandId);
+        $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Oppos! </strong>No Products Are Available in this Brand.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+    }
+?>	
 	<section>
 		<div class="container">
 			<div class="row">
@@ -17,9 +20,8 @@
 					<div class="features_items"><!--features_items-->
 						<h2 class="title text-center">Our Products</h2>
 						<?php 
-							$getProducts = $pro->getHomePageProducts();
-							if ($getProducts) {
-								while ($productValue = $getProducts->fetch_assoc()) {
+							if ($getProductByBrand) {
+								while ($productValue = $getProductByBrand->fetch_assoc()) {
 
 						?>
 						<div class="col-sm-4">
@@ -55,8 +57,8 @@
 								</div>
 							</div>
 						</div>
-						<?php } } ?>
-					</div><!--features_items-->
+						<?php } } else{ echo $msg;} ?>
+					</div>
 				</div>
 			</div>
 		</div>

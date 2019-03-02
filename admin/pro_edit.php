@@ -93,7 +93,7 @@
 
                                     <div class="form-group">
                                         <label>Product Details:</label>
-                                        <textarea name="pro_details"><?php echo $value['products_details']; ?></textarea>
+                                        <textarea name="products_details"><?php echo $value['products_details']; ?></textarea>
                                     </div>
 
                                     <div class="form-group">

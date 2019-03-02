@@ -3,7 +3,7 @@
 /*include_once "Database.php";
 include_once "Helpers.php";
 include_once "Session.php";*/
-ob_start();
+
 class Cart{
 	
 	private $db;
@@ -18,34 +18,38 @@ class Cart{
  		$productId  = mysqli_real_escape_string($this->db->link, $productId);
  		$sessionId = session_id();
 
- 		
- 		$cQuery = "SELECT * FROM cart_table WHERE productId = '$productId' AND sessionId = '$sessionId'";
- 		$checkPro = $this->db->readData($cQuery);
-        
- 		if ($checkPro) {
- 			$msg = "<div class='alert alert-danger'><strong>Error! </strong> Product Alrady Exists!</div>";
-        	return $msg;
- 		}
- 		else{
-            $pQuery = "SELECT * FROM products_table WHERE productId = '$productId'";
-            $pResults = $this->db->readData($pQuery)->fetch_assoc();
+ 		if (!preg_match("/^[0-9]*$/",$quantity)) {
+            $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Please integer value!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+            return $msg;
+        }
+        else{
+     		$cQuery = "SELECT * FROM cart_table WHERE productId = '$productId' AND sessionId = '$sessionId'";
+     		$checkPro = $this->db->readData($cQuery);
+            
+     		if ($checkPro) {
+     			$msg = "<div class='alert alert-danger'><strong>Error! </strong> Product Alrady Exists!</div>";
+            	return $msg;
+     		}
+     		else{
+                $pQuery = "SELECT * FROM products_table WHERE productId = '$productId'";
+                $pResults = $this->db->readData($pQuery)->fetch_assoc();
 
-            $productName = $pResults['productName'];
-            $price = $pResults['price'];
-            $image = $pResults['image'];
+                $productName = $pResults['productName'];
+                $price = $pResults['price'];
+                $image = $pResults['image'];
 
-            //print_r($pResults);
-	 		$query= "INSERT INTO cart_table(sessionId, productId, productName, price, quantity, image) VALUES('$sessionId', '$productId', '$productName', '$price', '$quantity', '$image')";
-	        $cartIns = $this->db->insertData($query);
+                //print_r($pResults);
+    	 		$query= "INSERT INTO cart_table(sessionId, productId, productName, price, quantity, image) VALUES('$sessionId', '$productId', '$productName', '$price', '$quantity', '$image')";
+    	        $cartIns = $this->db->insertData($query);
 
-	        if ($cartIns) {
-	        	echo "<script>window.location='cart.php';</script>";
-	        }
-	        else{
-	            //echo "<script>window.location='error.php';</script>";
-                echo "error";
-	        }
-	    }
+    	        if ($cartIns) {
+    	        	echo "<script>window.location='cart.php';</script>";
+    	        }
+    	        else{
+    	            echo "<script>window.location='error.php';</script>";
+    	        }
+    	    }
+        }
  	}
 
  	public function getCartPro(){
@@ -59,16 +63,13 @@ class Cart{
 
  		$quantity  = mysqli_real_escape_string($this->db->link, $quantity);
  		$cartId  = mysqli_real_escape_string($this->db->link, $cartId);
-
- 		$query= "UPDATE cart_table SET quantity='$quantity' WHERE cartId = '$cartId' ";
-        $upCart = $this->db->updateData($query);
-        if ($upCart) {
-        	$msg = "<div class='alert alert-success alert-dismissible' role='alert'><strong>Success! </strong> Cart Updated.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+        if (!preg_match("/^[0-9]*$/",$quantity)) {
+            $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Success! </strong>Please integer value!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
             return $msg;
         }
         else{
-        	$msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Cart Not Updated.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
-            return $msg;
+     		$query= "UPDATE cart_table SET quantity='$quantity' WHERE cartId = '$cartId' ";
+            $upCart = $this->db->updateData($query);
         }
  	}
 
@@ -84,6 +85,14 @@ class Cart{
             return $msg;
         }
  	}
+
+
+    public function checkCartTable(){
+        $sessionId = session_id();
+        $sql = "SELECT * FROM cart_table WHERE sessionId = '$sessionId'";
+        $result = $this->db->readData($sql);
+        return $result;
+    }
 
 }
 

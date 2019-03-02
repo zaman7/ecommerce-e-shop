@@ -34,7 +34,7 @@ class Products{
  		$categoryId  = mysqli_real_escape_string($this->db->link, $data['categoryId']);
  		$brandId = mysqli_real_escape_string($this->db->link, $data['brand_id']);
  		$price = mysqli_real_escape_string($this->db->link, $data['price']);
- 		$pro_details = mysqli_real_escape_string($this->db->link, $data['pro_details']);
+ 		$products_details = mysqli_real_escape_string($this->db->link, $data['products_details']);
  		$pro_type = mysqli_real_escape_string($this->db->link, $data['pro_type']);
  		$author = mysqli_real_escape_string($this->db->link, $data['author']);
 
@@ -70,7 +70,7 @@ class Products{
         	return $msg;
         }
 
-        else if (empty($pro_details)) {
+        else if (empty($products_details)) {
         	$msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Enter Products Details!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
         	return $msg;
         }
@@ -87,7 +87,7 @@ class Products{
             else{
             	move_uploaded_file($tmp_name, $upload_image);
 
-                $query= "INSERT INTO products_table(productName, brandId, categoryId, products_details, price, image, type, author) VALUES('$productName', '$brandId', '$categoryId', '$pro_details', '$price', '$upload_image', '$pro_type', '$author')";
+                $query= "INSERT INTO products_table(productName, brandId, categoryId, products_details, price, image, type, author) VALUES('$productName', '$brandId', '$categoryId', '$products_details', '$price', '$upload_image', '$pro_type', '$author')";
                 $proIns = $this->db->insertData($query);
                 if ($proIns) {
                     $msg = "<div class='alert alert-success alert-dismissible' role='alert'><strong>Success! </strong>Post Uploaded Successfully.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
@@ -102,7 +102,7 @@ class Products{
  	}
 
     //show all products function
-    public function getAllProducts(){
+    public function getAllProductsAdmin(){
         $query = "SELECT products_table.*, category_table.category, brand_table.brandName
         FROM products_table
         INNER JOIN category_table ON products_table.categoryId = category_table.categoryId
@@ -132,7 +132,7 @@ class Products{
         $categoryId  = mysqli_real_escape_string($this->db->link, $up_data['categoryId']);
         $brandId = mysqli_real_escape_string($this->db->link, $up_data['brand_id']);
         $price = mysqli_real_escape_string($this->db->link, $up_data['price']);
-        $pro_details = mysqli_real_escape_string($this->db->link, $up_data['pro_details']);
+        $products_details = mysqli_real_escape_string($this->db->link, $up_data['products_details']);
         $pro_type = mysqli_real_escape_string($this->db->link, $up_data['pro_type']);
         $author = mysqli_real_escape_string($this->db->link, $up_data['author']);
 
@@ -164,21 +164,16 @@ class Products{
             return $msg;
         }
 
-        else if (empty($pro_details)) {
+        else if (empty($products_details)) {
             $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Enter Products Details!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
-            return $msg;
-        }
-
-        else if ($pro_type == "") {
-            $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong> Product Type empty!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
             return $msg;
         }
 
         else{
             if (empty($pro_img)) {
                 $query= "UPDATE products_table SET productName='$productName',
-                brandId='$brandId', categoryId='$categoryId', body='$pro_details',
-                price='$price', type='$pro_type', author='$author'";
+                brandId='$brandId', categoryId='$categoryId', products_details='$products_details',
+                price='$price', type ='$pro_type', author ='$author'";
                 $proIns = $this->db->updateData($query);
                 if ($proIns) {
                     $msg = "<div class='alert alert-success alert-dismissible' role='alert'><strong>Success! </strong>Post Update Successfully.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
@@ -192,7 +187,7 @@ class Products{
             move_uploaded_file($tmp_name, $upload_image);
 
             $query= "UPDATE products_table SET productName='$productName',
-            brandId='$brandId', categoryId='$categoryId', products_details='$pro_details',
+            brandId='$brandId', categoryId='$categoryId', products_details='$products_details',
             price='$price', image='$upload_image', type='$pro_type', author='$author'";
             $proIns = $this->db->updateData($query);
             if ($proIns) {
@@ -225,6 +220,7 @@ class Products{
         if ($result) {
             $msg = "<div class='alert alert-success alert-dismissible' role='alert'><strong>Success! </strong>Product was Deleted!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
             return $msg;
+            header("Refresh:1");
         }
         else{
             $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong> Product is not Deleted!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
@@ -233,8 +229,8 @@ class Products{
     }
 
     //show fetured products
-    public function getFeaturedProducts(){
-        $query = "SELECT * FROM products_table WHERE type='1' ORDER BY productId DESC LIMIT 6";
+    public function getHomePageProducts(){
+        $query = "SELECT * FROM products_table ORDER BY productId DESC LIMIT 6";
         $result = $this->db->readData($query);
         return $result;
     }
@@ -249,6 +245,17 @@ class Products{
         return $result;
     }
 
+    public function showProductsByBrand($brandId){
+        $query = "SELECT * FROM products_table WHERE brandId = '$brandId'";
+        $result = $this->db->readData($query);
+        return $result;
+    }
+
+    public function showProductsByCat($categoryId){
+        $query = "SELECT * FROM products_table WHERE categoryId = '$categoryId'";
+        $result = $this->db->readData($query);
+        return $result;
+    }
     
 
 }

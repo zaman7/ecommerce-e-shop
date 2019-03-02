@@ -1,11 +1,16 @@
 <?php include "include/header.php" ?>
+<?php 
+    if (!isset($_GET['products_by_category']) OR $_GET['products_by_category'] == NULL ) {
+        echo "<script>window.location='index.php';</script>";
+    }
+    else{
+        $categoryId = $_GET['products_by_category'];
+        $getProductByCat  = $pro->showProductsByCat($categoryId);
 
-	<section id="advertisement">
-		<div class="container">
-			<img src="images/shop/advertisement.jpg" alt="" />
-		</div>
-	</section>
-	
+        $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Oppos! </strong>No Products Are Available in this Category.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+    }
+
+?>	
 	<section>
 		<div class="container">
 			<div class="row">
@@ -17,9 +22,8 @@
 					<div class="features_items"><!--features_items-->
 						<h2 class="title text-center">Our Products</h2>
 						<?php 
-							$getProducts = $pro->getHomePageProducts();
-							if ($getProducts) {
-								while ($productValue = $getProducts->fetch_assoc()) {
+							if ($getProductByCat) {
+								while ($productValue = $getProductByCat->fetch_assoc()) {
 
 						?>
 						<div class="col-sm-4">
@@ -55,8 +59,8 @@
 								</div>
 							</div>
 						</div>
-						<?php } } ?>
-					</div><!--features_items-->
+						<?php } }else{ echo $msg;} ?>
+					</div>
 				</div>
 			</div>
 		</div>
