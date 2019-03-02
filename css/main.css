@@ -962,7 +962,19 @@ h2.title {
 .add-to{
   margin-bottom: 10px;
 }
+#cart_update{
+    margin-left: 15px;
+    border: navajowhite;
+    padding: 4px 10px;
+    background: #2ecc71;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 4px;
+}
 
+.cart_delete{
+  text-align: center;
+}
 .add-to-cart i{
 	margin-right:5px;
 }

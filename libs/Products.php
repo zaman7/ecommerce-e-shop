@@ -87,7 +87,7 @@ class Products{
             else{
             	move_uploaded_file($tmp_name, $upload_image);
 
-                $query= "INSERT INTO products_table(productName, brandId, categoryId, body, price, image, type, author) VALUES('$productName', '$brandId', '$categoryId', '$pro_details', '$price', '$upload_image', '$pro_type', '$author')";
+                $query= "INSERT INTO products_table(productName, brandId, categoryId, products_details, price, image, type, author) VALUES('$productName', '$brandId', '$categoryId', '$pro_details', '$price', '$upload_image', '$pro_type', '$author')";
                 $proIns = $this->db->insertData($query);
                 if ($proIns) {
                     $msg = "<div class='alert alert-success alert-dismissible' role='alert'><strong>Success! </strong>Post Uploaded Successfully.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
@@ -192,7 +192,7 @@ class Products{
             move_uploaded_file($tmp_name, $upload_image);
 
             $query= "UPDATE products_table SET productName='$productName',
-            brandId='$brandId', categoryId='$categoryId', body='$pro_details',
+            brandId='$brandId', categoryId='$categoryId', products_details='$pro_details',
             price='$price', image='$upload_image', type='$pro_type', author='$author'";
             $proIns = $this->db->updateData($query);
             if ($proIns) {
@@ -240,22 +240,14 @@ class Products{
     }
 
     //show fetured single products
-    public function showSinglePro($single_pro){
-        $single_pro = $single_pro;
+    public function showSinglePro($productId){
+        $productId = $productId;
         $query = "SELECT p.*, c.category, b.brandName
         FROM products_table as p, category_table as c, brand_table as b WHERE p.categoryId = c.categoryId
-        AND p.brandId = b.brandId AND p.productId = '$single_pro'";
+        AND p.brandId = b.brandId AND p.productId = '$productId'";
         $result = $this->db->readData($query);
         return $result;
     }
-
-
-
-
-
-
-
-
 
     
 

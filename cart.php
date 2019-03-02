@@ -1,6 +1,16 @@
-
 <?php include "include/header.php" ?>
+<?php 
 
+	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $cartId = $_POST['cart_id'];
+        $quantity = $_POST['quantity'];
+        $upCart = $cart->updateCart($quantity,$cartId);
+    }
+    else if (isset($_GET['delete_cart_item'])) {
+         $del_cart = $_GET['delete_cart_item'];
+         $delCartItem= $cart->delCart($del_cart);
+     }
+?>
 	<section id="cart_items">
 		<div class="container">
 			<div class="breadcrumbs">
@@ -10,94 +20,78 @@
 				</ol>
 			</div>
 			<div class="table-responsive cart_info">
+				<?php if (isset($upCart)) {
+					echo $upCart;
+				}else if (isset($delCartItem)) {
+					echo $delCartItem;
+				} ?>
 				<table class="table table-condensed">
 					<thead>
 						<tr class="cart_menu">
-							<td class="image">Item</td>
-							<td class="description"></td>
-							<td class="price">Price</td>
-							<td class="quantity">Quantity</td>
-							<td class="total">Total</td>
-							<td></td>
+							<td width="15%" class="image">Item</td>
+							<td width="35%" class="description"></td>
+							<td width="10%" class="price">Price</td>
+							<td width="20%" class="quantity">Quantity</td>
+							<td width="10%" class="total">Total</td>
+							<td width="10%">Action</td>
 						</tr>
 					</thead>
+					
 					<tbody>
-						<tr>
-							<td class="cart_product">
-								<a href=""><img src="images/cart/one.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
+						
+						<?php 
 
+							$getCart = $cart->getCartPro();
+							if ($getCart) {
+								$i= 0;
+								$subTotal = 0;
+								while ($value = $getCart->fetch_assoc()) {
+									$i++;
+						?>
 						<tr>
+
 							<td class="cart_product">
-								<a href=""><img src="images/cart/two.png" alt=""></a>
+								<a href=""><img src="admin/<?php echo $value['image'] ?>" alt="" width="100px"></a>
 							</td>
 							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
+								<h4><a href="product-details.php?single_pro_details=<?php echo $value['productId']; ?>&add-to-cart"><?php echo $value['productName'] ?></a></h4>
 								<p>Web ID: 1089772</p>
 							</td>
 							<td class="cart_price">
-								<p>$59</p>
+								<p>$<?php echo $value['price'] ?></p>
 							</td>
 							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
+								<form action="#" method="POST">
+									<div class="cart_quantity_button">
+										<a class="cart_quantity_up" href=""> + </a>
+										<input type="hidden" name="cart_id" value="<?php echo $value['cartId'] ?>">
+										<input class="cart_quantity_input" type="text" name="quantity" value="<?php echo $value['quantity'] ?>" autocomplete="off" size="2">
+										<a class="cart_quantity_down" href=""> - </a>
+										<input type="submit" name="cat_update" id="cart_update" value="Update">
+									</div>
+								</form>
 							</td>
 							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
+								<p class="cart_total_price">$
+								<?php 
+									$totalPrice = $value['price'] * $value['quantity'];
+									echo $totalPrice;
+								?>
+								</p>
 							</td>
 							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+								<a class="cart_quantity_delete" href="cart.php?delete_cart_item=<?php echo $value['cartId'] ?>"><i class="fa fa-times"></i></a>
 							</td>
 						</tr>
-						<tr>
-							<td class="cart_product">
-								<a href=""><img src="images/cart/three.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
+						<?php
+							$subTotal = $subTotal + $totalPrice;
+							$vat = $subTotal*.07;
+							$gTotal = $subTotal+$vat;
+
+						?>
+					<?php } }else{
+						echo "No Data";
+					} ?>
 					</tbody>
 				</table>
 			</div>
@@ -168,10 +162,10 @@
 				<div class="col-sm-6">
 					<div class="total_area">
 						<ul>
-							<li>Cart Sub Total <span>$59</span></li>
-							<li>Eco Tax <span>$2</span></li>
+							<li>Cart Sub Total <span>$<?php echo $subTotal; ?></span></li>
+							<li>Eco Tax <span>$7%</span></li>
 							<li>Shipping Cost <span>Free</span></li>
-							<li>Total <span>$61</span></li>
+							<li>Total <span>$<?php echo $gTotal; ?></span></li>
 						</ul>
 							<a class="btn btn-default update" href="">Update</a>
 							<a class="btn btn-default check_out" href="">Check Out</a>
@@ -180,5 +174,7 @@
 			</div>
 		</div>
 	</section><!--/#do_action-->
+<script type="text/javascript">
 
+</script>
 <?php include "include/footer.php" ?>

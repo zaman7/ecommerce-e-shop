@@ -1,5 +1,4 @@
 <?php include "include/header.php"; ?>
-<?php include "../libs/Category.php"; ?>
 <?php $cat = new Category(); ?>
 <?php 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {

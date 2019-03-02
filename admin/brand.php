@@ -1,5 +1,4 @@
 <?php include "include/header.php"; ?>
-<?php include "../libs/Brand.php"; ?>
 <?php $brand = new Brand(); ?>
 <?php 
     if (isset($_GET['brand_delete'])) {

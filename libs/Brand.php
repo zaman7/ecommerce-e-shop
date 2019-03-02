@@ -34,6 +34,7 @@ class Brand{
  		$result = $this->db->readData($query);
  		return $result;
  	}
+
  	//delete brand name function
  	public function deleteBrand($del_brand){
  		$del_brand = $del_brand;
@@ -48,6 +49,8 @@ class Brand{
  			return $msg;
 		}
  	}
+
+ 	
 }
 
 

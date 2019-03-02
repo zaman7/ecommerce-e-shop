@@ -135,7 +135,7 @@
 										<a href="product-details.php?single_pro_details=<?php echo $featuredValue['productId']; ?>">
 											<p><?php echo $featuredValue['productName']; ?></p>
 										</a>
-										<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+										<a href="product-details.php?single_pro_details=<?php echo $featuredValue['productId']; ?>&add-to-cart" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 									</div>
 									<div class="product-overlay">
 										<div class="overlay-content">
@@ -143,7 +143,7 @@
 											<a href="product-details.php?single_pro_details=<?php echo $featuredValue['productId']; ?>&add-to-cart">
 												<p><?php echo $featuredValue['productName']; ?></p>
 											</a>
-											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+											<a href="product-details.php?single_pro_details=<?php echo $featuredValue['productId']; ?>&add-to-cart" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 										</div>
 									</div>
 									<?php if ($featuredValue['type'] == 0 ) {

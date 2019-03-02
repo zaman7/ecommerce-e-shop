@@ -1,11 +1,15 @@
 <?php include "include/header.php" ?>
 <?php 
     if (!isset($_GET['single_pro_details']) OR $_GET['single_pro_details'] == NULL ) {
-        echo "<script>window.location='404.php';</script>";
+        echo "<script>window.location='index.php';</script>";
     }
     else{
-        $single_pro = $_GET['single_pro_details'];
-        $getSinglePro  = $pro->showSinglePro($single_pro);
+        $productId = $_GET['single_pro_details'];
+        $getSinglePro  = $pro->showSinglePro($productId);
+    }
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $quantity = $_POST['quantity'];
+        $addCart = $cart->addToCart($quantity, $productId);
     }
 ?>	
 	<section>
@@ -115,7 +119,7 @@
 									<span>
 										<span>US $<?php echo $value['price']; ?></span>
 										<label>Quantity:</label>
-										<input type="text" value="3" name="quantity" />
+										<input type="text" value="1" name="quantity" />
 										<button type="submit" class="btn btn-fefault cart">
 											<i class="fa fa-shopping-cart"></i>
 											Add to cart
@@ -126,6 +130,9 @@
 								<p><b>Condition:</b> New</p>
 								<p><b>Brand:</b> <?php echo $value['brandName']; ?></p>
 								<a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>
+								<?php if (isset($addCart)) {
+									echo $addCart;
+								} ?>
 							</div><!--/product-information-->
 						</div>
 					</div><!--/product-details-->
@@ -137,7 +144,7 @@
 									<li><a href="#"><i class="fa fa-user"></i><?php echo $value['author']; ?></a></li>
 									<li><a href="#"><i class="fa fa-clock-o"></i><?php echo $helper ->formatTime($value['postTime']); ?></a></li>
 								</ul>
-								<p><?php echo $value['body']; ?></p>
+								<p><?php echo $value['products_details']; ?></p>
 								<p><b>Write Your Review</b></p>
 								
 								<form action="#">

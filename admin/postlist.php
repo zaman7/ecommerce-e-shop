@@ -1,5 +1,4 @@
 <?php include "include/header.php"; ?>
-<?php include "../libs/Products.php"; ?>
 <?php $pro = new Products(); ?>
 <?php $helper = new Helpers(); ?>
 <?php 
@@ -57,7 +56,7 @@
                                             <td><?php echo $value['brandName']; ?></td>
                                             <td><a href="<?php echo $value['image']; ?>"><img src="<?php echo $value['image']; ?>" width="80px"></a></td>
                                             <td><?php echo $value['price']; ?></td>
-                                            <td><?php echo $helper->textShorten($value['body'],30); ?></td>
+                                            <td><?php echo $helper->textShorten($value['products_details'],30); ?></td>
                                             <td>
                                             <?php if ($value['type'] == 0) {
                                                      echo "New";

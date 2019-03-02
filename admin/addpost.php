@@ -1,5 +1,4 @@
 <?php include "include/header.php"; ?>
-<?php include "../libs/Products.php"; ?>
 <?php $pro = new Products(); ?>
 <?php 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {

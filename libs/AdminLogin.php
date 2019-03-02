@@ -26,7 +26,7 @@ Session::checkLogin();
  		}
  		else{
 
- 			$query = "SELECT * FROM adminuser WHERE userName = '$userName' AND userPassword = '$password' LIMIT 1";
+ 			$query = "SELECT * FROM users_table WHERE userName = '$userName' AND userPassword = '$password' LIMIT 1";
  			$result = $this->db->readData($query);
  			if ($result) {
  				$value = $result->fetch_assoc();

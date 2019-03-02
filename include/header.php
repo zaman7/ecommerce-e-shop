@@ -14,7 +14,7 @@
     $pro   = new Products();
     $brand = new Brand();
     $cat   = new Category();
-    $cart   = new Cart();
+    $cart  = new Cart();
  ?>
 
 <!DOCTYPE html>

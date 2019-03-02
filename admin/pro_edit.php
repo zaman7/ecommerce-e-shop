@@ -1,5 +1,4 @@
 <?php include "include/header.php"; ?>
-<?php include "../libs/Products.php"; ?>
 <?php $pro = new Products(); ?>
 <?php 
     if (!isset($_GET['products_edit']) OR $_GET['products_edit'] == NULL ) {
@@ -94,7 +93,7 @@
 
                                     <div class="form-group">
                                         <label>Product Details:</label>
-                                        <textarea name="pro_details"><?php echo $value['body']; ?></textarea>
+                                        <textarea name="pro_details"><?php echo $value['products_details']; ?></textarea>
                                     </div>
 
                                     <div class="form-group">

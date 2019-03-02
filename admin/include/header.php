@@ -1,20 +1,16 @@
 <?php 
-    include_once "/../../libs/Database.php";
-    include_once "/../../libs/Helpers.php";
-    include_once "/../../libs/Session.php";
+
+    $filedir = realpath(dirname(__FILE__));
+    include $filedir."/../../libs/Database.php";
+    include $filedir."/../../libs/Helpers.php";
+    include $filedir."/../../libs/Session.php";
+    include $filedir."/../../libs/Brand.php";
+    include $filedir."/../../libs/Category.php";
+    include $filedir."/../../libs/Products.php";
     Session::init();
     Session::checkSession();
 ?>
-<?php
-    //set headers to NOT cache a page
-    header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
-    header("Pragma: no-cache"); //HTTP 1.0
-    header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); 
-    // Date in the past
-    //or, if you DO want a file to cache, use:
-    header("Cache-Control: max-age=2592000"); 
-    //30days (60sec * 60min * 24hours * 30days)
-?>
+
 <?php 
 
     if (isset($_GET['action']) && $_GET['action'] == 'logout') {
@@ -24,7 +20,7 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
+ 
 <head>
     <meta charset="UTF-8">
     <title>Home || Admin</title>
@@ -140,12 +136,12 @@
                             </div>
 
                             <div class="site-url">
-                                <a href="http://localhost/e-shopper" target="_blank"><i class="fa fa-home" aria-hidden="true"></i>View Site</a>
+                                <a href="http://localhost/ecommerce-e-shop" target="_blank"><i class="fa fa-home" aria-hidden="true"></i>View Site</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2 col-sm-3 col-xs-3">
-                        <?php $username = Session::get("name"); ?>
+                        <?php $username = Session::get("userName"); ?>
                         <div class="view-user right">
                             <div class="dropdown">
                                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><?php if (isset($username)) {
