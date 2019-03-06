@@ -60,8 +60,8 @@
 
                                 <div id="post-opt" class="collapse" aria-labelledby="post-opth" data-parent="#accordion">
                                     <div class="content-body submenu">
-                                        <a href="addpost.php">Add New</a>
-                                        <a href="postlist.php">All Posts</a>
+                                        <a href="addproduct.php">New Product</a>
+                                        <a href="products-list.php">Products List</a>
                                     </div>
                                 </div>
 
@@ -128,7 +128,7 @@
                                     <i class="fa fa-bars" aria-hidden="true"></i>
                                 </div>
                                 <div class="home-btn">
-                                    <a href="index.php"><i class="fa fa-tachometer" aria-hidden="true"></i></a>
+                                    <a href="dashbord.php"><i class="fa fa-tachometer" aria-hidden="true"></i></a>
                                 </div>
                                 <div class="site-url-mobile">
                                     <a href="#"><i class="fa fa-home" aria-hidden="true"></i></a>
@@ -151,8 +151,8 @@
                                 } ?>
                                 <span class="caret"></span></button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="?action=logout">Logout</a></li>
                                     <li><a href="profile.php">Profile</a></li>
+                                    <li><a href="?action=logout">Logout</a></li>
                                 </ul>
                             </div>
                         </div>

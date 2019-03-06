@@ -68,7 +68,7 @@
 							<div class="product-information"><!--/product-information-->
 								<img src="images/product-details/new.jpg" class="newarrival" alt="" />
 								<h2><?php echo $value['productName']; ?></h2>
-								<p>Web ID: 1089772</p>
+								<p>Product Code: <?php echo $value['productCode']; ?></p>
 								<img src="images/product-details/rating.png" alt="" />
 								<form action="#" method="POST">
 									<span>

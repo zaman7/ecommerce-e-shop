@@ -1,4 +1,19 @@
 <?php include "include/header.php" ?>
+<?php
+	$checkLogin = Session::get("customerLogin");
+	if ($checkLogin == false) {
+		echo "<script>window.location='login.php';</script>";
+	}
+
+	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $cartId = $_POST['cart_id'];
+        $quantity = $_POST['quantity'];
+        $upCart = $cart->updateCart($quantity,$cartId);
+    }
+    if (!isset($_GET['ref_cart'])) {
+    	echo "<meta http-equiv='refresh' content='0; URL=?ref_cart=buy_product'/>";
+    }
+?>
 
 	<section id="cart_items">
 		<div class="container">
@@ -121,93 +136,78 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td class="cart_product">
-								<a href=""><img src="images/cart/one.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
 
+						<?php 
+							$chekcCart = $cart->checkCartTable();
+							if ($chekcCart) {						
+								$getCart = $cart->getCartPro();
+								if ($getCart) {
+									$i= 0;
+									$subTotal = 0;
+									$qty = 0;
+									while ($value = $getCart->fetch_assoc()) {
+										$i++;
+						?>
 						<tr>
+
 							<td class="cart_product">
-								<a href=""><img src="images/cart/two.png" alt=""></a>
+								<a href=""><img src="admin/<?php echo $value['image'] ?>" alt="" width="100px"></a>
 							</td>
 							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
+								<h4><a href="product-details.php?single_product_details=<?php echo $value['productId']; ?>&add-to-cart"><?php echo $value['productName'] ?></a></h4>
+								<p>Product Code: <?php echo $value['productCode']; ?></p>
 							</td>
 							<td class="cart_price">
-								<p>$59</p>
+								<p>$<?php echo $value['price'] ?></p>
 							</td>
 							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
+								<form action="" method="POST">
+									<div class="cart_quantity_button">
+										<a class="cart_quantity_up" href=""> + </a>
+										<input type="hidden" name="cart_id" value="<?php echo $value['cartId'] ?>">
+										<input class="cart_quantity_input" type="text" name="quantity" value="<?php echo $value['quantity'] ?>" autocomplete="off" size="2">
+										<a class="cart_quantity_down" href=""> - </a>
+										<input type="submit" name="cat_update" id="cart_update" value="Update">
+									</div>
+								</form>
 							</td>
 							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
+								<p class="cart_total_price">$
+								<?php 
+									$totalPrice = $value['price'] * $value['quantity'];
+									echo $totalPrice;
+									$qty = $qty + $value['quantity'];
+									Session::set("quantity", $qty);
+
+								?>
+								</p>
 							</td>
 							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+								<a class="cart_quantity_delete" href="cart.php?delete_cart_item=<?php echo $value['cartId'] ?>"><i class="fa fa-times"></i></a>
 							</td>
 						</tr>
-						<tr>
-							<td class="cart_product">
-								<a href=""><img src="images/cart/three.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
+						
+						<?php
+							$subTotal = $subTotal + $totalPrice;
+							$vat = $subTotal*.07;
+							$gTotal = $subTotal+$vat;
+						?>
+						<?php } }else{
+							echo "Cart is empty";
+						} }else{
+							echo "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Cart is empty please <a href='http://localhost/ecommerce-e-shop/'>shop now!</a><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+						} ?>
 						<tr>
 							<td colspan="4">&nbsp;</td>
 							<td colspan="2">
 								<table class="table table-condensed total-result">
 									<tr>
 										<td>Cart Sub Total</td>
-										<td>$59</td>
+										<td>$<?php echo $subTotal; ?></td>
 									</tr>
 									<tr>
 										<td>Exo Tax</td>
-										<td>$2</td>
+										<td>$7%</td>
 									</tr>
 									<tr class="shipping-cost">
 										<td>Shipping Cost</td>
@@ -215,7 +215,7 @@
 									</tr>
 									<tr>
 										<td>Total</td>
-										<td><span>$61</span></td>
+										<td><span>$<?php echo $gTotal; ?></span></td>
 									</tr>
 								</table>
 							</td>

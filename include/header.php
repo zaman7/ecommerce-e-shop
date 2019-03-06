@@ -7,6 +7,7 @@
     include $filedir."/../libs/Category.php";
     include $filedir."/../libs/Products.php";
     include $filedir."/../libs/Cart.php";
+    include $filedir."/../libs/Customers.php";
     Session::init();
 ?>
 <?php
@@ -15,7 +16,17 @@
     $brand = new Brand();
     $cat   = new Category();
     $cart  = new Cart();
+    $cstmr = new Customers();
  ?>
+
+ <?php 
+    if (isset($_GET['action']) && $_GET['action'] == 'logout') {
+        $delCart = $cart->delCartData();
+        Session::destroy();
+        header("Location: login.php");
+    }
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -101,11 +112,18 @@
                     <div class="col-sm-8">
                         <div class="shop-menu pull-right">
                             <ul class="nav navbar-nav">
-                                <li><a href="#"><i class="fa fa-user"></i> Account</a></li>
+                                <li>
+                                <?php
+                                    $login = Session::get('customerLogin');
+                                    if ($login == true) {
+                                        $customersName =Session::get("customersName");                
+                                        $customersId =Session::get("customersId");                
+                                ?>
+                                <a href="profile.php?user_account=<?php echo $customersId; ?>"><i class="fa fa-user"></i> <?php echo $customersName; ?>
+                                <?php } ?></a></li>
                                 <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
                                 <li><a href="checkout.php"><i class="fa fa-crosshairs"></i> Checkout</a></li>
                                 <li><a href="cart.php"><i class="fa fa-shopping-cart"></i> Cart <span class="badge badge-light">
-                                    
                                     <?php
                                         $chekcCart = $cart->checkCartTable();
                                         if ($chekcCart) {
@@ -122,7 +140,14 @@
                                         }
                                      ?>
                                 </span></a></li>
+                                <?php
+                                    $login = Session::get('customerLogin');
+                                    if ($login == false) {
+                                ?>
                                 <li><a href="login.php"><i class="fa fa-lock"></i> Login</a></li>
+                                <?php }else{ ?>
+                                <li><a href="?action=logout&<?php echo Session::get("customersId"); ?>"><i class="fa fa-lock"></i> Logout</a></li>
+                                <?php } ?>
                             </ul>
                         </div>
                     </div>
@@ -164,8 +189,15 @@
                                                     echo "0";
                                                 }
                                             ?>
-                                        </span></a></li> 
-                                        <li><a href="login.php">Login</a></li> 
+                                        </span></a></li>
+                                        <?php
+                                            $login = Session::get('customerLogin');
+                                            if ($login == false) {
+                                        ?>
+                                        <li><a href="login.php">Login</a></li>
+                                        <?php }else{ ?>
+                                        <li><a href="?action=logout&<?php echo Session::get("customersId"); ?>">Logout</a></li>
+                                        <?php } ?>
                                     </ul>
                                 </li> 
                                 <li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>

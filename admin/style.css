@@ -237,7 +237,7 @@ div#accordion .collapse-body h3.active-page::before,
 #post-title{
     width: 320px;
 }
-#price, #author {
+#price, #author, #product-code {
     width: 220px;
 }
 input[type="file"] {

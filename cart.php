@@ -11,7 +11,7 @@
          $delCartItem= $cart->delCart($del_cart);
     }
     if (!isset($_GET['ref_cart'])) {
-    	echo "<meta http-equiv='refresh' content='0; URL=?ref_cart=zl'/>";
+    	echo "<meta http-equiv='refresh' content='0; URL=?ref_cart=buy_product'/>";
     }
 ?>
 	<section id="cart_items">
@@ -60,7 +60,7 @@
 							</td>
 							<td class="cart_description">
 								<h4><a href="product-details.php?single_product_details=<?php echo $value['productId']; ?>&add-to-cart"><?php echo $value['productName'] ?></a></h4>
-								<p>Web ID: 1089772</p>
+								<p>Product Code: <?php echo $value['productCode']; ?></p>
 							</td>
 							<td class="cart_price">
 								<p>$<?php echo $value['price'] ?></p>
@@ -177,8 +177,7 @@
 							<li>Shipping Cost <span>Free</span></li>
 							<li>Total <span>$<?php echo $gTotal; ?></span></li>
 						</ul>
-							<a class="btn btn-default update" href="">Update</a>
-							<a class="btn btn-default check_out" href="">Check Out</a>
+							<a class="btn btn-default check_out" href="checkout.php">Check Out</a>
 					</div>
 				</div>
 			</div>

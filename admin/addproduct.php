@@ -17,7 +17,7 @@
                     <div class="main-content">
                         <div class="display-flax-content">
                             <div class="section-title">
-                                <h2>Add New Product</h2>
+                                <h2>New Product</h2>
                             </div>
                             <div class="addpost">
                                 <?php
@@ -66,6 +66,11 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label for="product-code" >Product Code:</label>
+                                        <input type="text" name="productCode" id="product-code" class="form-control" placeholder="Product Code" />
+                                    </div>
+
+                                    <div class="form-group">
                                         <label for="price" >Price:</label>
                                         <input type="text" id="price" name="price" class="form-control" placeholder="Price" />
                                     </div>
@@ -78,7 +83,7 @@
                                     <div class="form-group">
                                         <label>Types:</label>
                                         <select id="selectBrand" name="pro_type">
-                                            <option value="0" selected="selected">Select One</option>
+                                            <option selected="selected">Select One</option>
                                             <option value="0">New</option>
                                             <option value="1">Fetured</option>
                                             <option value="2">General</option>

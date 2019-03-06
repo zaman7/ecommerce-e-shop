@@ -33,9 +33,10 @@ class Products{
         $productName  = mysqli_real_escape_string($this->db->link, $data['product_title']);
  		$categoryId  = mysqli_real_escape_string($this->db->link, $data['categoryId']);
  		$brandId = mysqli_real_escape_string($this->db->link, $data['brand_id']);
- 		$price = mysqli_real_escape_string($this->db->link, $data['price']);
+        $price = mysqli_real_escape_string($this->db->link, $data['price']);
+ 		$productCode = mysqli_real_escape_string($this->db->link, $data['productCode']);
  		$products_details = mysqli_real_escape_string($this->db->link, $data['products_details']);
- 		$pro_type = mysqli_real_escape_string($this->db->link, $data['pro_type']);
+ 		$type = mysqli_real_escape_string($this->db->link, $data['type']);
  		$author = mysqli_real_escape_string($this->db->link, $data['author']);
 
 
@@ -66,7 +67,11 @@ class Products{
         	return $msg;
         }
         else if (empty($price)) {
-        	$msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Enter Price!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+            $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Enter Price!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+            return $msg;
+        }
+        else if (empty($productCode)) {
+        	$msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Enter Product Code!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
         	return $msg;
         }
 
@@ -75,7 +80,7 @@ class Products{
         	return $msg;
         }
 
-        else if ($pro_type == "") {
+        else if ($type == "") {
         	$msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong> Product Type empty!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
         	return $msg;
         }
@@ -87,7 +92,7 @@ class Products{
             else{
             	move_uploaded_file($tmp_name, $upload_image);
 
-                $query= "INSERT INTO products_table(productName, brandId, categoryId, products_details, price, image, type, author) VALUES('$productName', '$brandId', '$categoryId', '$products_details', '$price', '$upload_image', '$pro_type', '$author')";
+                $query= "INSERT INTO products_table(productName, brandId, categoryId, products_details, price, image, productCode, type, author) VALUES('$productName', '$brandId', '$categoryId', '$products_details', '$price', '$upload_image', '$productCode', '$type', '$author')";
                 $proIns = $this->db->insertData($query);
                 if ($proIns) {
                     $msg = "<div class='alert alert-success alert-dismissible' role='alert'><strong>Success! </strong>Post Uploaded Successfully.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
@@ -115,26 +120,22 @@ class Products{
 
     //edit products function
     public function getEditPro($productId){
-        $query = "SELECT products_table.*, category_table.category, brand_table.brandName
-        FROM products_table
-        INNER JOIN category_table ON products_table.categoryId = category_table.categoryId
-        INNER JOIN brand_table ON products_table.brandId = brand_table.brandId
-        WHERE productId = '$productId'";
-
+        $query = "SELECT * FROM products_table WHERE productId = '$productId'";
         $result = $this->db->readData($query);
         return $result;
     }
 
     //update products function
-    public function updateProduct($up_data, $up_img_file){
+    public function updateProduct($data, $up_img_file){
 
-        $productName  = mysqli_real_escape_string($this->db->link, $up_data['product_title']);
-        $categoryId  = mysqli_real_escape_string($this->db->link, $up_data['categoryId']);
-        $brandId = mysqli_real_escape_string($this->db->link, $up_data['brand_id']);
-        $price = mysqli_real_escape_string($this->db->link, $up_data['price']);
-        $products_details = mysqli_real_escape_string($this->db->link, $up_data['products_details']);
-        $pro_type = mysqli_real_escape_string($this->db->link, $up_data['pro_type']);
-        $author = mysqli_real_escape_string($this->db->link, $up_data['author']);
+        $productId  = mysqli_real_escape_string($this->db->link, $data['productId']);
+        $productName  = mysqli_real_escape_string($this->db->link, $data['product_title']);
+        $categoryId  = mysqli_real_escape_string($this->db->link, $data['categoryId']);
+        $brandId = mysqli_real_escape_string($this->db->link, $data['brand_id']);
+        $price = mysqli_real_escape_string($this->db->link, $data['price']);
+        $products_details = mysqli_real_escape_string($this->db->link, $data['products_details']);
+        $type = mysqli_real_escape_string($this->db->link, $data['type']);
+        $author = mysqli_real_escape_string($this->db->link, $data['author']);
 
 
         $pro_img    = $up_img_file['image']['name'];
@@ -147,58 +148,58 @@ class Products{
         $unique_name = substr(md5(time()),0,10).'.'.$file_ext;
         $upload_image= "uploads/posts/".$unique_name;
 
-        if (empty($productName)) {
-            $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Enter product name!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
-            return $msg;
-        }
-        else if (empty($categoryId)) {
-            $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Select Catogory!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
-            return $msg;
-        }
-        else if (empty($brandId)) {
-            $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong> Select Brand!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
-            return $msg;
-        }
-        else if (empty($price)) {
-            $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Enter Price!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
-            return $msg;
-        }
-
-        else if (empty($products_details)) {
+/*         if (empty($products_details)) {
             $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Enter Products Details!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
             return $msg;
         }
 
-        else{
+        else{*/
             if (empty($pro_img)) {
-                $query= "UPDATE products_table SET productName='$productName',
-                brandId='$brandId', categoryId='$categoryId', products_details='$products_details',
-                price='$price', type ='$pro_type', author ='$author'";
-                $proIns = $this->db->updateData($query);
-                if ($proIns) {
-                    $msg = "<div class='alert alert-success alert-dismissible' role='alert'><strong>Success! </strong>Post Update Successfully.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+
+                $query= "UPDATE products_table SET
+                productName ='$productName',
+                brandId='$brandId',
+                categoryId='$categoryId',
+                products_details='$products_details',
+                price='$price',
+                type='$type',
+                author='$author'
+                WHERE productId= '$productId'";
+                $proUp = $this->db->updateData($query);
+                if ($proUp) {
+                    $msg = "<div class='alert alert-success alert-dismissible' role='alert'><strong>Success! </strong>Products Update Successfully.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
                     return $msg;
                 }
                 else{
-                    $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Post Not Updated.....!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+                    $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Products Not Updated.....!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
                     return $msg;
                 }
             }
-            move_uploaded_file($tmp_name, $upload_image);
-
-            $query= "UPDATE products_table SET productName='$productName',
-            brandId='$brandId', categoryId='$categoryId', products_details='$products_details',
-            price='$price', image='$upload_image', type='$pro_type', author='$author'";
-            $proIns = $this->db->updateData($query);
-            if ($proIns) {
-                $msg = "<div class='alert alert-success alert-dismissible' role='alert'><strong>Success! </strong>Post Update Successfully.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
-                return $msg;
-            }
             else{
-                $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Post Not Updated.....!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
-                return $msg;
+                move_uploaded_file($tmp_name, $upload_image);
+
+                $query= "UPDATE products_table SET
+                productName ='$productName',
+                brandId='$brandId',
+                categoryId='$categoryId',
+                products_details='$products_details',
+                price='$price',
+                type='$type',
+                author='$author'
+                WHERE productId= '$productId'";
+                
+                $proUp = $this->db->updateData($query);
+                if ($proUp) {
+                    $msg = "<div class='alert alert-success alert-dismissible' role='alert'><strong>Success! </strong>Products Update Successfully.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+                    return $msg;
+                }
+                else{
+                    $msg = "<div class='alert alert-danger alert-dismissible' role='alert'><strong>Error! </strong>Products Not Updated.....!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+                    return $msg;
+                }  
             }
-        }
+            
+        
     }
 
     //delete products function

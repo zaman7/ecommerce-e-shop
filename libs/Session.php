@@ -31,16 +31,15 @@ class Session{
 
 
     public static function checkSession(){
-
         if (self::get("login") == false) {
             self::destroy();
-            header("Location: login.php");
+            echo "<script>window.location='login.php';</script>";
         }
     }
 
     public static function checkLogin(){
         if (self::get("login") == true) {
-            header("Location: index.php");
+            echo "<script>window.location='dashbord.php';</script>";
         }
     }
     

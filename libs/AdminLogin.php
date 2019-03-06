@@ -34,7 +34,7 @@ Session::checkLogin();
  				Session::set('userId', $value["userId"]);
  				Session::set('name', $value["name"]);
  				Session::set('userName', $value["userName"]);
- 				header("Location: index.php");
+ 				header("Location: dashbord.php");
  			}
  			else{
  				$msg = "<strong>Error! </strong> User or Password Not match!";

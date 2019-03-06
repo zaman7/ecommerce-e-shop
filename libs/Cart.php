@@ -33,13 +33,14 @@ class Cart{
      		else{
                 $pQuery = "SELECT * FROM products_table WHERE productId = '$productId'";
                 $pResults = $this->db->readData($pQuery)->fetch_assoc();
-
+                
                 $productName = $pResults['productName'];
                 $price = $pResults['price'];
                 $image = $pResults['image'];
+                $productCode = $pResults['productCode'];
 
                 //print_r($pResults);
-    	 		$query= "INSERT INTO cart_table(sessionId, productId, productName, price, quantity, image) VALUES('$sessionId', '$productId', '$productName', '$price', '$quantity', '$image')";
+    	 		$query= "INSERT INTO cart_table(sessionId, productId, productName, price, image, productCode, quantity) VALUES('$sessionId', '$productId', '$productName', '$price', '$image', '$productCode', '$quantity')";
     	        $cartIns = $this->db->insertData($query);
 
     	        if ($cartIns) {
@@ -91,6 +92,13 @@ class Cart{
         $sessionId = session_id();
         $sql = "SELECT * FROM cart_table WHERE sessionId = '$sessionId'";
         $result = $this->db->readData($sql);
+        return $result;
+    }
+
+    public function delCartData(){
+        $sessionId = session_id();
+        $query = "DELETE FROM cart_table WHERE sessionId = '$sessionId'";
+        $result = $this->db->deleteData($query);
         return $result;
     }
 

@@ -1,7 +1,7 @@
     <div class="sidebar-area">
         <div class="sidebar-menu">
             <div class="dashboard-link">
-                <h3><a href="index.php"><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</a></h3>
+                <h3><a href="dashboard.php"><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</a></h3>
             </div>
             
             <div id="accordion" class="collapse-item-section">                              
@@ -10,8 +10,8 @@
 
                     <div id="post-opt-m" class="collapse" aria-labelledby="post-opth-m" data-parent="#accordion">
                         <div class="content-body submenu">
-                            <a href="addpost.php">Add New Product</a>
-                            <a href="postlist.php">All Products</a>
+                            <a href="addproduct.php">New Product</a>
+                            <a href="products-list.php">Products List</a>
                         </div>
                     </div>
                 </div>

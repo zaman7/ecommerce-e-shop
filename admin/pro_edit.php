@@ -2,7 +2,7 @@
 <?php $pro = new Products(); ?>
 <?php 
     if (!isset($_GET['products_edit']) OR $_GET['products_edit'] == NULL ) {
-        echo "<script>window.location='postlist.php';</script>";
+        echo "<script>window.location='products-list.php';</script>";
     }
     else{
         $products_edit = $_GET['products_edit'];
@@ -35,6 +35,7 @@
                                     $value = $get_edit_pro->fetch_assoc();
                                 ?>
                                 <form action="" method="POST" enctype="multipart/form-data">
+                                    <input type="text" name="productId" value="<?php echo $value['productId'] ?>">
                                     <div class="form-group">
                                         <label for="title">Product Name:</label>
                                         <input type="text" name="product_title" value="<?php echo $value['productName']; ?>" id="post-title" class="form-control" />
@@ -73,13 +74,13 @@
                                             } ?>
                                          value="<?php echo $brandValue['brandId']; ?>"><?php echo $brandValue["brandName"]; ?></option>
 
-                                    <?php } } ?>
+                                        <?php } } ?>
                                         </select>
                                     </div>
                                     <?php if (isset($value['image'])) { ?>
 
                                     <img src="<?php echo $value['image']; ?>" width='200px'>
-                                    <?php }else{ echo "No Image On This Post..!"; } ?>
+                                    <?php }else{ echo "No Image On This Product..!"; } ?>
 
                                     <div class="form-group">
                                         <label for="file">Product Image:</label>
