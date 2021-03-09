@@ -1,2 +1,2 @@
-# ecommerce-e-shop
-eCommerce website row php
+# Ecommerce
+A simple ecommerce website row php
